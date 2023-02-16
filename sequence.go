@@ -37,18 +37,17 @@ func (s *SequenceAINode) OnEnter() Result {
 
 			s.curNode = node
 			res := node.OnEnter()
+			node.OnExit()
 			if res != ResultSuccess {
 				if res == ResultFailed || s.curNode.GetIdx() == len(s.nodeList) {
 					s.curNode = nil
 				}
 
-				s.OnExit()
 				return res
 			}
 		}
 	}
 
-	s.OnExit()
 	s.curNode = nil
 	return ResultSuccess
 }

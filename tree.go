@@ -2,12 +2,12 @@ package gobehaviortree
 
 type (
 	OnExecTreeFunc func(tree *Tree)
-	OnTreeChildFinishFunc func(tree *Tree, result Result, root *Root)
+	OnTreeChildFinishFunc func(tree *Tree, result Result, root BaseNode)
 )
 
 //Tree tree describe
 type Tree struct {
-	root *Root
+	root BaseNode
 	onExec OnExecTreeFunc
 	onChildFinish OnTreeChildFinishFunc
 }
@@ -21,7 +21,7 @@ func NewTree(onExec OnExecTreeFunc, onChildFinish OnTreeChildFinishFunc) *Tree {
 }
 
 //SetRoot setroot
-func (t *Tree) SetRoot(node *Root) {
+func (t *Tree) SetRoot(node BaseNode) {
 	if t.root != nil {
 		t.root.OnUninstall()
 	}
@@ -41,7 +41,12 @@ func (t *Tree) exec() {
 	}
 
 	res := t.root.OnEnter()
+	t.root.OnExit()
 	if t.onChildFinish != nil {
 		t.onChildFinish(t, res, t.root)
 	}
+}
+
+func (t *Tree) GetRoot() BaseNode {
+	return t.root
 }

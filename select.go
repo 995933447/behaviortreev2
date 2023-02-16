@@ -37,14 +37,13 @@ func (s *SelectAINode) OnEnter() Result {
 		for _, node := range s.nodeList {
 			s.curNode = node
 			res := node.OnEnter()
+			node.OnExit()
 			if res != ResultFailed {
-				s.OnExit()
 				return res
 			}
 		}
 	}
 
-	s.OnExit()
 	return ResultSuccess
 }
 

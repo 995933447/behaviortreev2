@@ -12,10 +12,9 @@ type Behaviourer struct {
 
 //Init init
 func (b *Behaviourer) Init() {
-	b.executor = gobehaviortree.NewTree(nil, func(tree *gobehaviortree.Tree, result gobehaviortree.Result, root *gobehaviortree.Root) {
+	b.executor = gobehaviortree.NewTree(nil, func(tree *gobehaviortree.Tree, result gobehaviortree.Result, root gobehaviortree.BaseNode) {
 		fmt.Printf("node:%s run over!\n", root.WhoAmI())
 	})
-	root := gobehaviortree.NewRoot()
 
 	action1 := NewAction1()
 	action2 := NewAction2()
@@ -27,8 +26,7 @@ func (b *Behaviourer) Init() {
 
 	selector.AddNodes(action2, seq, action1)
 
-	root.AddNode(selector)
-	b.executor.SetRoot(root)
+	b.executor.SetRoot(selector)
 }
 
 //Run run
